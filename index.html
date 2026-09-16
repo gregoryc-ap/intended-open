@@ -29,8 +29,6 @@
     padding:14px 16px;width:100%;font-family:inherit;font-size:16px;cursor:pointer;
     -webkit-tap-highlight-color:transparent}
   button.ghost{background:transparent;color:var(--ink);border:1px solid var(--ink)}
-  button.small{width:100%}
-  .stack{display:flex;flex-direction:column;gap:8px;margin-top:18px}
   nav.tabs{position:fixed;left:0;right:0;bottom:0;max-width:430px;margin:0 auto;
     background:var(--paper);border-top:1px solid var(--line);
     display:grid;grid-template-columns:repeat(4,1fr);padding-bottom:env(safe-area-inset-bottom)}
@@ -39,7 +37,6 @@
   nav.tabs button.on{color:var(--ink)}
   .brief{background:var(--card);border:1px solid var(--line);padding:16px;margin:12px 0}
   .brief .job{font-size:18px;margin:0 0 6px}
-  .ledger span{display:block;padding:6px 0;border-bottom:1px solid var(--line);font-size:15px}
   .msg{margin:12px 0;padding:10px 12px;background:var(--card);border:1px solid var(--line)}
   .msg.us{margin-left:24px;background:#F3EBE0}
   .notice{background:#F3EBE0;padding:14px;border:1px solid var(--line);margin:12px 0}
@@ -54,29 +51,29 @@ const YOU = {
 };
 const POOL = [
   {id:"jordan", name:"Jordan", city:"Decatur", inside:true, door:"together",
-    job:"Offering to parent",
-    letter:"I am ready to be a legal parent, not an uncle who visits. Same school year. I will not move the child out of this metro.",
-    agree:["Both intend to be legal parents","Clinic path","Two homes in the same metro"],
-    decide:["Whose school district","How a new partner enters year one"],
+    job:"Wants to raise a child with you",
+    letter:"I want to be a parent on paper, not a visitor. Same schools. I will not move the child out of this part of Atlanta.",
+    agree:["Both of you want to be legal parents","A clinic, not home","Two homes in the same city"],
+    decide:["Which school district","How a new partner shows up in year one"],
     conflict:[]},
   {id:"priya", name:"Priya", city:"Atlanta", inside:true, door:"together",
-    job:"Offering to parent",
-    letter:"I want a child who knows both parents from the first day. Public school. I will not share a roof.",
-    agree:["Both intend to be legal parents","Atlanta metro","Clinic path"],
-    decide:["One home or two","Religion in the home"],
+    job:"Wants to raise a child with you",
+    letter:"I want a child who knows both parents from the first day. Public school. I do not want to live in the same house.",
+    agree:["Both of you want to be legal parents","Atlanta","A clinic"],
+    decide:["One home or two","Faith in the home"],
     conflict:[]},
   {id:"sam", name:"Sam", city:"Savannah", inside:false, door:"together",
-    job:"Offering to parent",
-    letter:"I would parent with someone who will stay in Georgia. I can travel; I cannot relocate in the first year.",
-    agree:["Both intend to be legal parents","Georgia birth"],
-    decide:["Who lives where the child sleeps"],
-    conflict:["Place is required — Savannah is outside the lock"]},
+    job:"Wants to raise a child with you",
+    letter:"I would parent with someone who will stay in Georgia. I can visit. I cannot move in the first year.",
+    agree:["Both of you want to be legal parents","Give birth in Georgia"],
+    decide:["Where the child sleeps"],
+    conflict:["You asked to stay within fifty miles. Savannah is farther than that."]},
   {id:"riley", name:"Riley", city:"Atlanta", inside:true, door:"witness",
-    job:"Known donor — will not parent",
-    letter:"I can help you conceive with a physician. I will not be on the certificate.",
+    job:"Would help you conceive — not as a parent",
+    letter:"I can help at a clinic. I will not be on the birth certificate.",
     agree:[], decide:[], conflict:[]},
   {id:"alex", name:"Alex", city:"Brooklyn", inside:false, door:"together",
-    job:"Offering to parent", letter:"Looking for a parent in New York.",
+    job:"Wants to raise a child with you", letter:"Looking for a parent in New York.",
     agree:[], decide:[], conflict:[]}
 ];
 let view = "record";
@@ -95,54 +92,53 @@ function render(){
 function tabs(){
   if(["brief","thread","refusal"].includes(view)) return "";
   const t = (id,label) => `<button class="${view===id?"on":""}" data-go="${id}">${label}</button>`;
-  return `<nav class="tabs">${t("record","Record")}${t("year","Year")}${t("work","Work")}${t("intros","Introductions")}</nav>`;
+  return `<nav class="tabs">${t("record","Plan")}${t("year","Support")}${t("work","Papers")}${t("intros","People")}</nav>`;
 }
 function record(){
   return `<header class="top"><div class="brand">Intended</div>
     <h1>${YOU.name}</h1>
-    <div class="sub">You have not been sent forward.</div></header>
+    <div class="sub">You are not cleared to start a pregnancy yet.</div></header>
     <main>
       <div class="letterhead">
-        <div class="label">This household</div>
-        <div class="row"><span>Door</span><b>Parent together</b></div>
-        <div class="row"><span>Home</span><b>${YOU.city}, ${YOU.county} County</b></div>
-        <div class="row"><span>Birth</span><b>Georgia</b></div>
-        <div class="row"><span>Method</span><b>Clinic</b></div>
+        <div class="label">Your plan</div>
+        <div class="row"><span>You are here to</span><b>Raise a child together</b></div>
+        <div class="row"><span>You live in</span><b>${YOU.city}</b></div>
+        <div class="row"><span>Birth would be in</span><b>Georgia</b></div>
+        <div class="row"><span>How you would conceive</span><b>At a clinic</b></div>
       </div>
-      <div class="label">What Georgia will do</div>
-      <p class="muted">Georgia does not give you a clean pre-birth order for every structure. Two unmarried intended parents should expect to finish parentage after birth unless counsel writes another path.</p>
+      <div class="label">How Georgia treats parents like you</div>
+      <p class="muted">Georgia often will not name both of you as parents before the baby is born. You should plan to finish the legal work after birth unless a lawyer writes another path.</p>
       <div class="stack">
-        <button data-go="year">Continue the year</button>
-        <button class="ghost" data-go="intros">Introductions</button>
+        <button data-go="year">See your year of support</button>
+        <button class="ghost" data-go="intros">See people nearby</button>
       </div>
     </main>`;
 }
 function year(){
   const h = YOU.hours;
-  const row = (n,left,opened) => `<div class="row"><span>${n}</span><b>${left} remaining</b></div><div class="muted" style="margin-top:-6px;margin-bottom:8px">${opened}</div>`;
-  return `<header class="top"><div class="brand">The year · $2,999</div>
-    <h1>Eleven hours, when they are needed.</h1>
-    <div class="sub">Priced as if you will use them. Guide · ${YOU.guide}</div></header>
+  const row = (n,left,opened) => `<div class="row"><span>${n}</span><b>${left} left</b></div><div class="muted" style="margin-top:-6px;margin-bottom:8px">${opened}</div>`;
+  return `<header class="top"><div class="brand">Your year · $2,999</div>
+    <h1>Time with real people, when you need it.</h1>
+    <div class="sub">Priced as if you will use every hour. Avery keeps this organized. Avery is not your lawyer.</div></header>
     <main>
-      ${row("Counsel", h.lawyer, "Opens in Talking")}
-      ${row("Therapist", h.therapist, "Opens in Talking")}
-      ${row("Clinician", h.clinician, "Before we send you forward")}
-      ${row("Planner", h.planner, "Half used in Learning")}
-      <div class="label">Next</div>
-      <p class="muted">Avery can sit with you before you request a conversation. The first therapist hour walks the ledger.</p>
-      <div class="stack"><button data-go="intros">See who cleared Threshold</button></div>
+      ${row("A lawyer", h.lawyer, "When you are talking with someone, or already have them")}
+      ${row("A therapist", h.therapist, "When you are talking with someone")}
+      ${row("A clinician", h.clinician, "Before anyone says you are ready to try")}
+      ${row("A money planner", h.planner, "Half an hour already used")}
+      <p class="muted">The first therapist visit walks through where you agree and where you do not — before anyone books a clinic.</p>
+      <div class="stack"><button data-go="intros">See people nearby</button></div>
     </main>`;
 }
 function work(){
-  return `<header class="top"><div class="brand">The work</div>
-    <h1>Vault and checklist</h1>
-    <div class="sub">Treatment is not on this bill.</div></header>
+  return `<header class="top"><div class="brand">Papers</div>
+    <h1>What is finished, and what is not.</h1>
+    <div class="sub">Medical treatment is not part of this.</div></header>
     <main>
-      <div class="row"><span>Blueprint</span><b>Drafted</b></div>
-      <div class="row"><span>Counsel letters</span><b>Not yet</b></div>
-      <div class="row"><span>Planner review</span><b>0.5 hour used</b></div>
-      <div class="row"><span>Certificate</span><b>—</b></div>
-      <p class="muted">When a clinic is named, it lives here as a note. We do not run the cycle.</p>
+      <div class="row"><span>Planning notes</span><b>Started</b></div>
+      <div class="row"><span>Letters from lawyers</span><b>Not yet</b></div>
+      <div class="row"><span>Money conversation</span><b>Started</b></div>
+      <div class="row"><span>Birth certificate</span><b>Not yet</b></div>
+      <p class="muted">When you choose a clinic, it lives here as a note. We do not run the cycle.</p>
     </main>`;
 }
 function intros(){
@@ -152,62 +148,62 @@ function intros(){
       <div class="job">${p.job}</div>
       <div class="muted">${p.name} · ${p.city}</div>
       <p>${p.letter}</p>
-      <div class="label">Ledger</div>
+      <div class="label">Where you stand</div>
       <div class="ledger">
-        <span>We agree — ${p.agree.length}</span>
-        <span>We will have to decide — ${p.decide.length}</span>
-        <span>We do not agree — ${p.conflict.length}</span>
+        <div class="row"><span>You already agree</span><b>${p.agree.length}</b></div>
+        <div class="row"><span>You still need to decide</span><b>${p.decide.length}</b></div>
+        <div class="row"><span>You do not agree</span><b>${p.conflict.length}</b></div>
       </div>
-      <div class="stack"><button class="small" data-brief="${p.id}">Read the household</button></div>
+      <div class="stack"><button data-brief="${p.id}">Read their plan</button></div>
     </div>`).join("");
-  return `<header class="top"><div class="brand">Introductions</div>
-    <h1>Households who will parent</h1>
-    <div class="sub">Same city, county, or fifty miles. We do not show a distance.</div></header>
+  return `<header class="top"><div class="brand">People nearby</div>
+    <h1>People who want to raise a child with you</h1>
+    <div class="sub">Same city, same county, or about fifty miles. We will not show how many miles.</div></header>
     <main>
-      <div class="notice">Riley is a known donor and is not on this rail. Alex is in New York and is not on this rail.</div>
+      <div class="notice">Someone in Atlanta who only wants to donate sperm is not on this list. Someone in New York is not on this list.</div>
       ${cards}
-      ${!widen ? `<p class="muted">There are households farther away. Farther away is a different life for a child.</p>
-        <button class="ghost" id="widen">Ask to widen</button>` : ""}
+      ${!widen ? `<p class="muted">There are people farther away. Living farther away is a different life for a child.</p>
+        <button class="ghost" id="widen">Show me Savannah anyway</button>` : ""}
     </main>`;
 }
 function brief(){
   const p = POOL.find(x => x.id===selected) || POOL[0];
-  return `<header class="top"><div class="brand">A household</div>
+  return `<header class="top"><div class="brand">Their plan</div>
     <h1>${p.job}</h1>
     <div class="sub">${p.name} · ${p.city}</div></header>
     <main>
       <p>${p.letter}</p>
-      <div class="label">We agree</div>
+      <div class="label">You already agree</div>
       ${p.agree.map(x=>`<div class="row"><span>${x}</span></div>`).join("")}
-      <div class="label">We will have to decide</div>
+      <div class="label">You still need to decide</div>
       ${p.decide.map(x=>`<div class="row"><span>${x}</span></div>`).join("")}
-      ${p.conflict.length?`<div class="label">We do not agree</div>${p.conflict.map(x=>`<div class="row"><span>${x}</span></div>`).join("")}`:""}
+      ${p.conflict.length?`<div class="label">You do not agree</div>${p.conflict.map(x=>`<div class="row"><span>${x}</span></div>`).join("")}`:""}
       <div class="stack">
-        <button id="request">Request a conversation</button>
-        <button class="ghost" data-go="intros">Not this household</button>
+        <button id="request">Ask to talk</button>
+        <button class="ghost" data-go="intros">Not this person</button>
       </div>
     </main>`;
 }
 function thread(){
   const p = POOL.find(x => x.id===selected) || POOL[0];
-  return `<header class="top"><div class="brand">Lane, Mora, ${p.name}</div>
-    <h1>Everyone on this record is on this thread.</h1>
-    <div class="sub">Accepted yesterday. No side chat.</div></header>
+  return `<header class="top"><div class="brand">Lane, Mora, and ${p.name}</div>
+    <h1>Everyone in this plan is in this conversation.</h1>
+    <div class="sub">They said yes yesterday. There is no private side chat.</div></header>
     <main>
-      <div class="msg"><div class="muted">${p.name}</div>I read the ledger. School district is the thing I want the therapist in the room for.</div>
-      <div class="msg us"><div class="muted">Lane</div>Agreed. Avery can sit with us before we talk about a clinic.</div>
+      <div class="msg"><div class="muted">${p.name}</div>I read where we agree. School district is the thing I want a therapist in the room for.</div>
+      <div class="msg us"><div class="muted">Lane</div>Same. Avery can sit with us before we talk about a clinic.</div>
       <div class="stack">
-        <button class="ghost" data-go="refusal">We will not send you forward</button>
-        <button class="ghost" data-go="record">Return to the record</button>
+        <button class="ghost" data-go="refusal">See what a closed door looks like</button>
+        <button class="ghost" data-go="record">Back to your plan</button>
       </div>
     </main>`;
 }
 function refusal(){
   return `<header class="top"><div class="brand">Intended</div>
-    <h1>We will not send you forward.</h1></header>
+    <h1>We cannot recommend that you start yet.</h1></header>
     <main>
-      <p>The birth state will not hold this structure as written. A child would leave the hospital with the wrong names. That is not a delay. It is the door staying closed.</p>
-      <div class="stack"><button data-go="record">Return to the record</button></div>
+      <p>As written, Georgia would not treat both of you as parents when this child is born. That is not a delay. It is us refusing to let you begin a pregnancy that the law will not hold.</p>
+      <div class="stack"><button data-go="record">Back to your plan</button></div>
     </main>`;
 }
 function bind(){
