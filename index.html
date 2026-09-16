@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<title>Intended</title>
+<style>
+  :root{
+    --paper:#F6F1EA; --ink:#1C1917; --muted:#6B645C; --line:#E4D9CC;
+    --accent:#8C4A2F; --card:#FFFcf7;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%;background:var(--paper);color:var(--ink);
+    font-family:Georgia,"Iowan Old Style",serif;-webkit-text-size-adjust:100%;}
+  .phone{max-width:430px;margin:0 auto;background:var(--paper);min-height:100vh;
+    display:flex;flex-direction:column;padding-bottom:env(safe-area-inset-bottom);}
+  header.top{padding:22px 22px 10px;border-bottom:1px solid var(--line)}
+  header.top .brand{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+  h1{font-weight:500;font-size:28px;line-height:1.2;margin:8px 0 4px}
+  .sub{color:var(--muted);font-size:14px;line-height:1.45}
+  main{flex:1;padding:18px 22px 110px;overflow:auto}
+  .label{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin:18px 0 6px}
+  .letterhead{border-top:1px solid var(--ink);padding-top:12px}
+  .row{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}
+  .row b{font-weight:500;text-align:right}
+  .muted{color:var(--muted);font-size:14px}
+  p{line-height:1.5}
+  button{appearance:none;border:0;background:var(--ink);color:var(--paper);
+    padding:14px 16px;width:100%;font-family:inherit;font-size:16px;cursor:pointer;
+    -webkit-tap-highlight-color:transparent}
+  button.ghost{background:transparent;color:var(--ink);border:1px solid var(--ink)}
+  button.small{width:100%}
+  .stack{display:flex;flex-direction:column;gap:8px;margin-top:18px}
+  nav.tabs{position:fixed;left:0;right:0;bottom:0;max-width:430px;margin:0 auto;
+    background:var(--paper);border-top:1px solid var(--line);
+    display:grid;grid-template-columns:repeat(4,1fr);padding-bottom:env(safe-area-inset-bottom)}
+  nav.tabs button{background:transparent;color:var(--muted);font-size:11px;letter-spacing:.08em;
+    text-transform:uppercase;padding:16px 4px}
+  nav.tabs button.on{color:var(--ink)}
+  .brief{background:var(--card);border:1px solid var(--line);padding:16px;margin:12px 0}
+  .brief .job{font-size:18px;margin:0 0 6px}
+  .ledger span{display:block;padding:6px 0;border-bottom:1px solid var(--line);font-size:15px}
+  .msg{margin:12px 0;padding:10px 12px;background:var(--card);border:1px solid var(--line)}
+  .msg.us{margin-left:24px;background:#F3EBE0}
+  .notice{background:#F3EBE0;padding:14px;border:1px solid var(--line);margin:12px 0}
+</style>
+</head>
+<body>
+<div class="phone" id="app"></div>
+<script>
+const YOU = {
+  name:"Lane & Mora", city:"Atlanta", county:"Fulton",
+  hours:{lawyer:3, therapist:4, clinician:2, planner:1.5}, guide:"Avery"
+};
+const POOL = [
+  {id:"jordan", name:"Jordan", city:"Decatur", inside:true, door:"together",
+    job:"Offering to parent",
+    letter:"I am ready to be a legal parent, not an uncle who visits. Same school year. I will not move the child out of this metro.",
+    agree:["Both intend to be legal parents","Clinic path","Two homes in the same metro"],
+    decide:["Whose school district","How a new partner enters year one"],
+    conflict:[]},
+  {id:"priya", name:"Priya", city:"Atlanta", inside:true, door:"together",
+    job:"Offering to parent",
+    letter:"I want a child who knows both parents from the first day. Public school. I will not share a roof.",
+    agree:["Both intend to be legal parents","Atlanta metro","Clinic path"],
+    decide:["One home or two","Religion in the home"],
+    conflict:[]},
+  {id:"sam", name:"Sam", city:"Savannah", inside:false, door:"together",
+    job:"Offering to parent",
+    letter:"I would parent with someone who will stay in Georgia. I can travel; I cannot relocate in the first year.",
+    agree:["Both intend to be legal parents","Georgia birth"],
+    decide:["Who lives where the child sleeps"],
+    conflict:["Place is required — Savannah is outside the lock"]},
+  {id:"riley", name:"Riley", city:"Atlanta", inside:true, door:"witness",
+    job:"Known donor — will not parent",
+    letter:"I can help you conceive with a physician. I will not be on the certificate.",
+    agree:[], decide:[], conflict:[]},
+  {id:"alex", name:"Alex", city:"Brooklyn", inside:false, door:"together",
+    job:"Offering to parent", letter:"Looking for a parent in New York.",
+    agree:[], decide:[], conflict:[]}
+];
+let view = "record";
+let selected = null;
+let widen = false;
+function visiblePool(){
+  return POOL.filter(p => p.door==="together" && (p.inside || widen) && p.city!=="Brooklyn");
+}
+function go(v,id){ view=v; if(id) selected=id; render(); }
+function render(){
+  const el = document.getElementById("app");
+  const screens = {record, year, work, intros, brief, thread, refusal};
+  el.innerHTML = (screens[view]||record)() + tabs();
+  bind();
+}
+function tabs(){
+  if(["brief","thread","refusal"].includes(view)) return "";
+  const t = (id,label) => `<button class="${view===id?"on":""}" data-go="${id}">${label}</button>`;
+  return `<nav class="tabs">${t("record","Record")}${t("year","Year")}${t("work","Work")}${t("intros","Introductions")}</nav>`;
+}
+function record(){
+  return `<header class="top"><div class="brand">Intended</div>
+    <h1>${YOU.name}</h1>
+    <div class="sub">You have not been sent forward.</div></header>
+    <main>
+      <div class="letterhead">
+        <div class="label">This household</div>
+        <div class="row"><span>Door</span><b>Parent together</b></div>
+        <div class="row"><span>Home</span><b>${YOU.city}, ${YOU.county} County</b></div>
+        <div class="row"><span>Birth</span><b>Georgia</b></div>
+        <div class="row"><span>Method</span><b>Clinic</b></div>
+      </div>
+      <div class="label">What Georgia will do</div>
+      <p class="muted">Georgia does not give you a clean pre-birth order for every structure. Two unmarried intended parents should expect to finish parentage after birth unless counsel writes another path.</p>
+      <div class="stack">
+        <button data-go="year">Continue the year</button>
+        <button class="ghost" data-go="intros">Introductions</button>
+      </div>
+    </main>`;
+}
+function year(){
+  const h = YOU.hours;
+  const row = (n,left,opened) => `<div class="row"><span>${n}</span><b>${left} remaining</b></div><div class="muted" style="margin-top:-6px;margin-bottom:8px">${opened}</div>`;
+  return `<header class="top"><div class="brand">The year · $2,999</div>
+    <h1>Eleven hours, when they are needed.</h1>
+    <div class="sub">Priced as if you will use them. Guide · ${YOU.guide}</div></header>
+    <main>
+      ${row("Counsel", h.lawyer, "Opens in Talking")}
+      ${row("Therapist", h.therapist, "Opens in Talking")}
+      ${row("Clinician", h.clinician, "Before we send you forward")}
+      ${row("Planner", h.planner, "Half used in Learning")}
+      <div class="label">Next</div>
+      <p class="muted">Avery can sit with you before you request a conversation. The first therapist hour walks the ledger.</p>
+      <div class="stack"><button data-go="intros">See who cleared Threshold</button></div>
+    </main>`;
+}
+function work(){
+  return `<header class="top"><div class="brand">The work</div>
+    <h1>Vault and checklist</h1>
+    <div class="sub">Treatment is not on this bill.</div></header>
+    <main>
+      <div class="row"><span>Blueprint</span><b>Drafted</b></div>
+      <div class="row"><span>Counsel letters</span><b>Not yet</b></div>
+      <div class="row"><span>Planner review</span><b>0.5 hour used</b></div>
+      <div class="row"><span>Certificate</span><b>—</b></div>
+      <p class="muted">When a clinic is named, it lives here as a note. We do not run the cycle.</p>
+    </main>`;
+}
+function intros(){
+  const list = visiblePool();
+  const cards = list.map(p => `
+    <div class="brief">
+      <div class="job">${p.job}</div>
+      <div class="muted">${p.name} · ${p.city}</div>
+      <p>${p.letter}</p>
+      <div class="label">Ledger</div>
+      <div class="ledger">
+        <span>We agree — ${p.agree.length}</span>
+        <span>We will have to decide — ${p.decide.length}</span>
+        <span>We do not agree — ${p.conflict.length}</span>
+      </div>
+      <div class="stack"><button class="small" data-brief="${p.id}">Read the household</button></div>
+    </div>`).join("");
+  return `<header class="top"><div class="brand">Introductions</div>
+    <h1>Households who will parent</h1>
+    <div class="sub">Same city, county, or fifty miles. We do not show a distance.</div></header>
+    <main>
+      <div class="notice">Riley is a known donor and is not on this rail. Alex is in New York and is not on this rail.</div>
+      ${cards}
+      ${!widen ? `<p class="muted">There are households farther away. Farther away is a different life for a child.</p>
+        <button class="ghost" id="widen">Ask to widen</button>` : ""}
+    </main>`;
+}
+function brief(){
+  const p = POOL.find(x => x.id===selected) || POOL[0];
+  return `<header class="top"><div class="brand">A household</div>
+    <h1>${p.job}</h1>
+    <div class="sub">${p.name} · ${p.city}</div></header>
+    <main>
+      <p>${p.letter}</p>
+      <div class="label">We agree</div>
+      ${p.agree.map(x=>`<div class="row"><span>${x}</span></div>`).join("")}
+      <div class="label">We will have to decide</div>
+      ${p.decide.map(x=>`<div class="row"><span>${x}</span></div>`).join("")}
+      ${p.conflict.length?`<div class="label">We do not agree</div>${p.conflict.map(x=>`<div class="row"><span>${x}</span></div>`).join("")}`:""}
+      <div class="stack">
+        <button id="request">Request a conversation</button>
+        <button class="ghost" data-go="intros">Not this household</button>
+      </div>
+    </main>`;
+}
+function thread(){
+  const p = POOL.find(x => x.id===selected) || POOL[0];
+  return `<header class="top"><div class="brand">Lane, Mora, ${p.name}</div>
+    <h1>Everyone on this record is on this thread.</h1>
+    <div class="sub">Accepted yesterday. No side chat.</div></header>
+    <main>
+      <div class="msg"><div class="muted">${p.name}</div>I read the ledger. School district is the thing I want the therapist in the room for.</div>
+      <div class="msg us"><div class="muted">Lane</div>Agreed. Avery can sit with us before we talk about a clinic.</div>
+      <div class="stack">
+        <button class="ghost" data-go="refusal">We will not send you forward</button>
+        <button class="ghost" data-go="record">Return to the record</button>
+      </div>
+    </main>`;
+}
+function refusal(){
+  return `<header class="top"><div class="brand">Intended</div>
+    <h1>We will not send you forward.</h1></header>
+    <main>
+      <p>The birth state will not hold this structure as written. A child would leave the hospital with the wrong names. That is not a delay. It is the door staying closed.</p>
+      <div class="stack"><button data-go="record">Return to the record</button></div>
+    </main>`;
+}
+function bind(){
+  document.querySelectorAll("[data-go]").forEach(b => b.onclick = () => go(b.dataset.go));
+  document.querySelectorAll("[data-brief]").forEach(b => b.onclick = () => go("brief", b.dataset.brief));
+  const w = document.getElementById("widen");
+  if(w) w.onclick = () => { widen = true; go("intros"); };
+  const r = document.getElementById("request");
+  if(r) r.onclick = () => go("thread");
+}
+render();
+</script>
+</body>
+</html>
