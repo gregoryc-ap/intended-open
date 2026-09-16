@@ -3,45 +3,81 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="theme-color" content="#F3EEE6"/>
 <title>Intended</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500&family=Outfit:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
-:root{--paper:#F6F1EA;--ink:#1C1917;--muted:#6B645C;--line:#E4D9CC;--card:#FFFcf7}
+:root{
+  --paper:#F3EEE6; --ink:#1A1614; --quiet:#6E675F; --line:#DDD3C6;
+  --card:#FBF7F1; --rust:#7A3A2A;
+}
 *{box-sizing:border-box}
-html,body{margin:0;background:var(--paper);color:var(--ink);font-family:Georgia,"Iowan Old Style",serif;-webkit-text-size-adjust:100%}
-.phone{max-width:430px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;padding-bottom:env(safe-area-inset-bottom)}
-header.top{padding:20px 22px 10px;border-bottom:1px solid var(--line)}
-.brand{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
-.switch{font-size:13px;color:var(--muted);margin-top:6px}
-h1{font-weight:500;font-size:26px;line-height:1.2;margin:8px 0 6px}
-.sub,.muted{color:var(--muted);font-size:14px;line-height:1.45}
-main{flex:1;padding:16px 22px 110px}
-.label{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:16px 0 6px}
-.row{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}
-.row b{font-weight:500;text-align:right}
-button{appearance:none;border:0;background:var(--ink);color:var(--paper);padding:14px 16px;width:100%;font-family:inherit;font-size:16px;margin-top:10px}
+html,body{margin:0;background:#D9D0C4;color:var(--ink);
+  font-family:Fraunces,Georgia,serif;font-optical-sizing:auto;
+  -webkit-text-size-adjust:100%;-webkit-tap-highlight-color:transparent}
+.phone{max-width:430px;margin:0 auto;min-height:100dvh;background:var(--paper);
+  display:flex;flex-direction:column;box-shadow:0 0 0 1px #cfc4b4}
+header.top{padding:calc(18px + env(safe-area-inset-top)) 24px 16px}
+.brand{font-family:Outfit,sans-serif;font-size:11px;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--quiet);font-weight:500}
+h1{font-weight:400;font-size:30px;line-height:1.15;margin:10px 0 8px;letter-spacing:-.02em}
+.lede{font-size:16px;line-height:1.45;color:var(--quiet);max-width:22em}
+.switch{font-family:Outfit,sans-serif;font-size:13px;color:var(--quiet);margin-top:10px;cursor:pointer}
+main{flex:1;padding:8px 24px 120px}
+.label{font-family:Outfit,sans-serif;font-size:11px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--quiet);margin:28px 0 10px;font-weight:500}
+.row{display:flex;justify-content:space-between;gap:16px;padding:13px 0;
+  border-bottom:1px solid var(--line);font-size:16px}
+.row span:last-child,.row b{font-weight:400;text-align:right;color:var(--quiet);font-family:Outfit,sans-serif;font-size:14px}
+p{font-size:17px;line-height:1.5;margin:0 0 12px}
+.quiet{color:var(--quiet);font-size:15px;line-height:1.5}
+button{appearance:none;border:0;background:var(--ink);color:var(--paper);
+  padding:15px 18px;width:100%;font-family:Outfit,sans-serif;font-size:15px;
+  margin-top:12px;border-radius:2px}
 button.ghost{background:transparent;color:var(--ink);border:1px solid var(--ink)}
-button.path{text-align:left;background:var(--card);color:var(--ink);border:1px solid var(--line);margin-top:8px}
-button.path b{display:block;font-weight:500;font-size:17px;margin-bottom:4px}
-button.path span{display:block;color:var(--muted);font-size:13px}
-nav.tabs{position:fixed;left:0;right:0;bottom:0;max-width:430px;margin:0 auto;background:var(--paper);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(4,1fr);padding-bottom:env(safe-area-inset-bottom)}
-nav.tabs button{background:transparent;color:var(--muted);font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:16px 2px;margin:0}
+button.path{text-align:left;background:transparent;color:var(--ink);
+  border:0;border-bottom:1px solid var(--line);border-radius:0;padding:18px 0;margin:0}
+button.path b{display:block;font-family:Fraunces,serif;font-weight:400;font-size:20px;margin-bottom:6px}
+button.path span{display:block;color:var(--quiet);font-size:13px;font-weight:400;line-height:1.4}
+nav.tabs{position:sticky;bottom:0;background:rgba(243,238,230,.94);
+  backdrop-filter:blur(12px);border-top:1px solid var(--line);
+  display:grid;grid-template-columns:repeat(4,1fr);padding-bottom:env(safe-area-inset-bottom)}
+nav.tabs button{background:transparent;color:var(--quiet);font-size:10px;letter-spacing:.08em;
+  text-transform:uppercase;padding:14px 2px 16px;margin:0;font-weight:500}
 nav.tabs button.on{color:var(--ink)}
-nav.tabs button.off{opacity:.35}
-.brief,.notice{background:var(--card);border:1px solid var(--line);padding:14px;margin:12px 0}
-.msg{margin:12px 0;padding:10px 12px;background:var(--card);border:1px solid var(--line)}
-.msg.us{margin-left:20px;background:#F3EBE0}
-.stack{display:flex;flex-direction:column}
+nav.tabs button.off{opacity:.3}
+.hour{display:grid;grid-template-columns:72px 1fr;gap:16px;padding:18px 0;border-bottom:1px solid var(--line);align-items:start}
+.hour .n{font-size:42px;line-height:1;letter-spacing:-.03em}
+.hour h2{font-size:18px;font-weight:400;margin:2px 0 4px}
+.notice{padding:16px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin:18px 0;color:var(--quiet);font-size:15px;line-height:1.45}
+.person{padding:22px 0;border-bottom:1px solid var(--line)}
+.person .job{font-size:22px;line-height:1.2;margin:0 0 6px}
+.person .meta{font-family:Outfit,sans-serif;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--quiet);margin-bottom:10px}
+.person p{font-size:16px;color:var(--ink)}
+.msg{margin:14px 0;padding:14px 0;border-bottom:1px solid var(--line)}
+.msg .who{font-family:Outfit,sans-serif;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--quiet);margin-bottom:6px}
+.msg.us{padding-left:16px}
+.fade{animation:in .28s ease}
+@keyframes in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 </style>
 </head>
 <body>
 <div class="phone" id="app"></div>
 <script>
 const PATHS = {
-  together:{id:"together",label:"Raise a child together",people:true,price:"$2,999",who:"Lane & Mora"},
-  donor:{id:"donor",label:"Help someone conceive — not as a parent",people:true,price:"$2,399",who:"Riley"},
-  have:{id:"have",label:"We already have the other adult",people:false,price:"$2,999",who:"Lane & Mora"},
-  solo:{id:"solo",label:"Building alone, with a clinic",people:false,price:"$2,399",who:"Morgan"},
-  unsure:{id:"unsure",label:"Not sure yet",people:false,price:"—",who:"You"}
+  together:{id:"together",label:"Raise a child together",people:true,price:"$2,999",who:"Lane & Mora",
+    hint:"You may meet someone after this plan is complete."},
+  donor:{id:"donor",label:"Help someone conceive — not as a parent",people:true,price:"$2,399",who:"Riley",
+    hint:"A clinic. You will not be a parent."},
+  have:{id:"have",label:"We already have the other adult",people:false,price:"$2,999",who:"Lane & Mora",
+    hint:"You will not be shown other people."},
+  solo:{id:"solo",label:"Building alone, with a clinic",people:false,price:"$2,399",who:"Morgan",
+    hint:"You will not be shown other people."},
+  unsure:{id:"unsure",label:"Not sure yet",people:false,price:"—",who:"You",
+    hint:"Read first. You will not meet anyone yet."}
 };
 const POOL = [
   {id:"jordan",name:"Jordan",city:"Decatur",inside:true,rail:"together",job:"Wants to raise a child with you",
@@ -62,14 +98,15 @@ const POOL = [
     agree:["Clinic only","You will not be a legal parent","The child will be told"],
     decide:["Written updates or a meeting later"],conflict:[]}
 ];
-let path = null, view = "start", selected = null, widen = false;
+let path=null,view="start",selected=null,widen=false;
 function go(v,id){view=v;if(id!==undefined)selected=id;render();}
 function setPath(id){path=id;widen=false;selected=null;view=id==="unsure"?"learn":"plan";render();}
+function shell(inner,nav){return `<div class="fade">${inner}</div>${nav?tabs():""}`;}
 function render(){
   const el=document.getElementById("app");
-  const screens={start,plan,support,papers,people,brief,thread,refuse,learn};
-  el.innerHTML=(screens[view]||start)()+((view==="start"||view==="brief"||view==="thread"||view==="refuse")?"":tabs());
-  bind();
+  const map={start,plan,support,papers,people,brief,thread,refuse,learn};
+  const withNav=!["start","brief","thread","refuse"].includes(view);
+  el.innerHTML=shell((map[view]||start)(),withNav); bind();
 }
 function tabs(){
   const p=PATHS[path]||PATHS.together;
@@ -79,65 +116,59 @@ function tabs(){
 function start(){
   return `<header class="top"><div class="brand">Intended</div>
     <h1>What family are you building?</h1>
-    <div class="sub">You can change your mind. You cannot do two of these at once.</div></header>
-    <main class="stack">
-      ${Object.values(PATHS).map(p=>`<button class="path" data-path="${p.id}"><b>${p.label}</b><span>${p.people?"You may meet someone, after the plan is complete.":"You will not be shown other people."}</span></button>`).join("")}
-    </main>`;
+    <p class="lede">You can change your mind. You cannot hold two of these at once.</p></header>
+    <main>${Object.values(PATHS).map(p=>`<button class="path" data-path="${p.id}"><b>${p.label}</b><span>${p.hint}</span></button>`).join("")}</main>`;
 }
 function plan(){
-  const p=PATHS[path];
-  const together=path==="together";
-  const donor=path==="donor";
+  const p=PATHS[path]; const together=path==="together"; const donor=path==="donor";
   return `<header class="top"><div class="brand">Intended</div>
     <h1>${p.who}</h1>
-    <div class="sub">${path==="unsure"?"Read first. You are not cleared to start a pregnancy.":"You are not cleared to start a pregnancy yet."}</div>
+    <p class="lede">Not cleared to start a pregnancy yet.</p>
     <div class="switch" data-go="start">Try another kind of plan</div></header>
     <main>
       <div class="label">Your plan</div>
       <div class="row"><span>You are here to</span><b>${p.label}</b></div>
       <div class="row"><span>You live in</span><b>Atlanta</b></div>
       <div class="row"><span>Birth would be in</span><b>Georgia</b></div>
-      <div class="row"><span>How you would conceive</span><b>${donor||together||path==="solo"||path==="have"?"At a clinic":"Not yet"}</b></div>
+      <div class="row"><span>How you would conceive</span><b>${path==="unsure"?"Not yet":"At a clinic"}</b></div>
       ${together?`<div class="row"><span>Who you can meet</span><b>Same city, county, or about fifty miles</b></div>`:""}
-      ${donor?`<div class="row"><span>Families already helped</span><b>1 of 5 on Intended</b></div>`:""}
-      ${!p.people?`<div class="notice">People nearby is closed on this plan. You already have what you need, or you are not meeting someone here.</div>`:""}
+      ${donor?`<div class="row"><span>Families already helped</span><b>1 of 5 here</b></div>`:""}
+      ${!p.people?`<div class="notice">People nearby is closed on this plan.</div>`:""}
       <div class="label">How Georgia treats parents like you</div>
-      <p class="muted">${donor?"If you stay off the certificate and you use a clinic, Georgia can treat you as a donor — not a parent. That only holds if you do not try to parent later.":"Georgia often will not name both intended parents before the baby is born. Plan to finish the legal work after birth unless a lawyer writes another path."}</p>
-      <button data-go="support">See your year of support</button>
-      ${p.people?`<button class="ghost" data-go="people">See people nearby</button>`:""}
+      <p class="quiet">${donor?"If you stay off the certificate and you use a clinic, Georgia can treat you as a donor — not a parent. That only holds if you do not try to parent later.":"Georgia often will not name both intended parents before the baby is born. Plan to finish the legal work after birth unless a lawyer writes another path."}</p>
+      <button data-go="support">Your year of support</button>
+      ${p.people?`<button class="ghost" data-go="people">People nearby</button>`:""}
     </main>`;
 }
 function support(){
   const p=PATHS[path];
-  return `<header class="top"><div class="brand">Support · ${p.price}</div>
-    <h1>Time with real people, when you need it.</h1>
-    <div class="sub">Priced as if you will use every hour. Household $2,999. One adult $2,399. Work can attach this as a benefit.</div></header>
+  const hour=(n,title,note)=>`<div class="hour"><div class="n">${n}</div><div><h2>${title}</h2><p class="quiet">${note}</p></div></div>`;
+  return `<header class="top"><div class="brand">Support</div>
+    <h1>${p.price}</h1>
+    <p class="lede">Eleven hours with real people, priced as if you will use them. Household $2,999. One adult $2,399.</p></header>
     <main>
-      <div class="row"><span>A lawyer</span><b>3 hours</b></div>
-      <div class="muted">Independent counsel. We do not sell a contract that binds you.</div>
-      <div class="row"><span>A therapist</span><b>4 hours</b></div>
-      <div class="muted">The first visit walks through where you agree and where you do not.</div>
-      <div class="row"><span>A clinician</span><b>2 hours</b></div>
-      <div class="muted">Before anyone says you are ready to try. Not your fertility clinic.</div>
-      <div class="row"><span>A money planner</span><b>2 hours</b></div>
+      ${hour(3,"A lawyer","Independent counsel. We do not sell a contract that binds you.")}
+      ${hour(4,"A therapist","The first visit walks through where you agree and where you do not.")}
+      ${hour(2,"A clinician","Before anyone says you are ready to try. Not your fertility clinic.")}
+      ${hour(2,"A money planner","What the first year actually costs, without a cycle benefit from work.")}
       <div class="label">How you pay</div>
-      <p class="muted">Once a year, each month, taken from a paycheck if work offers it, or billed to the company.</p>
-      <p class="muted">Avery keeps this organized. Avery is not your lawyer.</p>
-      <button data-go="papers">See what is finished</button>
+      <p class="quiet">Once a year, each month, from a paycheck if work offers it, or billed to the company. Work can also offer Intended to everyone as a small monthly benefit.</p>
+      <p class="quiet">Avery keeps this organized. Avery is not your lawyer.</p>
+      <button data-go="papers">What is finished</button>
     </main>`;
 }
 function papers(){
   return `<header class="top"><div class="brand">Papers</div>
     <h1>What is finished, and what is not.</h1>
-    <div class="sub">Medical treatment is not part of this.</div></header>
+    <p class="lede">Medical treatment is not part of this.</p></header>
     <main>
       <div class="row"><span>Your written plan</span><b>Started</b></div>
       <div class="row"><span>Notes for two lawyers</span><b>Not a contract we sell</b></div>
       <div class="row"><span>Letters from lawyers</span><b>Not yet</b></div>
       <div class="row"><span>Money conversation</span><b>Started</b></div>
-      <div class="row"><span>Birth certificate</span><b>Not yet</b></div>
-      <p class="muted">If you need a gestational carrier or a bank, we will name the kind of licensed help. We will not run that list here.</p>
-      <button class="ghost" data-go="refuse">See what a closed door looks like</button>
+      <div class="row"><span>Birth certificate</span><b>After the child is born</b></div>
+      <p class="quiet" style="margin-top:22px">If you need a gestational carrier or a bank, we will name the kind of licensed help. We will not run that list here.</p>
+      <button class="ghost" data-go="refuse">What a closed door looks like</button>
     </main>`;
 }
 function people(){
@@ -145,31 +176,31 @@ function people(){
   if(!p.people){
     return `<header class="top"><div class="brand">People nearby</div>
       <h1>This plan does not show other people.</h1>
-      <div class="sub">You already have the other adult, or you are building with a clinic alone.</div></header>
+      <p class="lede">You already have the other adult, or you are building with a clinic alone.</p></header>
       <main><button data-go="plan">Back to your plan</button></main>`;
   }
   const rail=path==="donor"?"donor":"together";
   const list=POOL.filter(x=>x.rail===rail&&(x.inside||widen));
   const hidden=rail==="together"&&!widen;
-  const cards=list.map(x=>`<div class="brief"><div style="font-size:18px;margin-bottom:6px">${x.job}</div>
-    <div class="muted">${x.name} · ${x.city}</div><p>${x.letter}</p>
-    <div class="row"><span>You already agree</span><b>${x.agree.length}</b></div>
-    <div class="row"><span>You still need to decide</span><b>${x.decide.length}</b></div>
-    <div class="row"><span>You do not agree</span><b>${x.conflict.length}</b></div>
-    <button data-brief="${x.id}">Read their plan</button></div>`).join("");
+  const cards=list.map(x=>`<article class="person" data-brief="${x.id}">
+      <div class="job">${x.job}</div>
+      <div class="meta">${x.name} · ${x.city}</div>
+      <p>${x.letter}</p>
+    </article>`).join("");
   return `<header class="top"><div class="brand">People nearby</div>
-    <h1>${rail==="donor"?"People looking for a donor who will not parent":"People who want to raise a child with you"}</h1>
-    <div class="sub">${rail==="donor"?"A clinic. Not home. Not sex. We will not show how many miles.":"Same city, same county, or about fifty miles. We will not show how many miles."}</div></header>
+    <h1>${rail==="donor"?"Looking for someone who will not parent":"People who want to raise a child with you"}</h1>
+    <p class="lede">${rail==="donor"?"A clinic. Not home. Not sex. We will not show how many miles.":"Same city, same county, or about fifty miles. We will not show how many miles."}</p></header>
     <main>
-      ${rail==="together"?`<div class="notice">Someone in this city who only wants to donate is not on this list. Someone in New York is not on this list.</div>`:`<div class="notice">You have helped one family. The cap here is five. If you later want to parent, you leave this path.</div>`}
+      <div class="notice">${rail==="together"?"Someone in this city who only wants to donate is not on this list. Someone in New York is not on this list.":"You have helped one family. The cap here is five. If you later want to parent, you leave this path."}</div>
       ${cards}
-      ${hidden?`<p class="muted">There are people farther away. Living farther away is a different life for a child.</p><button class="ghost" id="widen">Show me Savannah anyway</button>`:""}
+      ${hidden?`<p class="quiet" style="margin-top:22px">There are people farther away. Living farther away is a different life for a child.</p><button class="ghost" id="widen">Show me Savannah anyway</button>`:""}
     </main>`;
 }
 function brief(){
   const x=POOL.find(i=>i.id===selected)||POOL[0];
-  return `<header class="top"><div class="brand">Their plan</div>
-    <h1>${x.job}</h1><div class="sub">${x.name} · ${x.city}</div></header>
+  return `<header class="top"><div class="brand switch" data-go="people">← People nearby</div>
+    <h1>${x.job}</h1>
+    <p class="lede">${x.name} · ${x.city}</p></header>
     <main>
       <p>${x.letter}</p>
       <div class="label">You already agree</div>${x.agree.map(s=>`<div class="row"><span>${s}</span></div>`).join("")}
@@ -184,11 +215,11 @@ function thread(){
   const names=path==="together"?`Lane, Mora, and ${x.name}`:`Riley and ${x.name}`;
   return `<header class="top"><div class="brand">${names}</div>
     <h1>Everyone in this plan is in this conversation.</h1>
-    <div class="sub">They said yes yesterday. There is no private side chat.</div></header>
+    <p class="lede">They said yes yesterday. There is no private side chat.</p></header>
     <main>
-      <div class="msg"><div class="muted">${x.name}</div>I read where we agree. I want a therapist in the room before anyone books a clinic.</div>
-      <div class="msg us"><div class="muted">${path==="together"?"Lane":"Riley"}</div>Same. Avery can sit with us first.</div>
-      <button class="ghost" data-go="refuse">See what a closed door looks like</button>
+      <div class="msg"><div class="who">${x.name}</div>I read where we agree. I want a therapist in the room before anyone books a clinic.</div>
+      <div class="msg us"><div class="who">${path==="together"?"Lane":"Riley"}</div>Same. Avery can sit with us first.</div>
+      <button class="ghost" data-go="refuse">What a closed door looks like</button>
       <button class="ghost" data-go="plan">Back to your plan</button>
     </main>`;
 }
@@ -197,19 +228,19 @@ function refuse(){
     <h1>We cannot recommend that you start yet.</h1></header>
     <main>
       <p>As written, the law where this child would be born would not treat the adults the way your plan says. That is not a delay. It is us refusing to let you begin a pregnancy the law will not hold.</p>
-      <p class="muted">You can change the birth state, finish the papers with two lawyers, or wait.</p>
+      <p class="quiet">You can change the birth state, finish the papers with two lawyers, or wait.</p>
       <button data-go="plan">Back to your plan</button>
     </main>`;
 }
 function learn(){
   return `<header class="top"><div class="brand">Intended</div>
     <h1>Read first.</h1>
-    <div class="sub">You are not meeting anyone yet.</div>
+    <p class="lede">You are not meeting anyone yet.</p>
     <div class="switch" data-go="start">Choose a plan when you know</div></header>
     <main>
       <p>Intended is for people who want a child to leave the hospital with the right parents on paper.</p>
-      <p class="muted">If you want to raise a child with someone, they need to live nearby unless you both say otherwise. If you want to help someone conceive, that happens at a clinic, and you will not be a parent.</p>
-      <p class="muted">We do not match gestational carriers. We do not keep a catalog of eggs or sperm.</p>
+      <p class="quiet">If you want to raise a child with someone, they need to live nearby unless you both say otherwise. If you want to help someone conceive, that happens at a clinic, and you will not be a parent.</p>
+      <p class="quiet">We do not match gestational carriers. We do not keep a catalog of eggs or sperm.</p>
       <button data-go="start">Choose what you are here to do</button>
     </main>`;
 }
